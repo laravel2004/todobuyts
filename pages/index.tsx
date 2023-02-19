@@ -1,11 +1,45 @@
 import Head from 'next/head'
-import Image from 'next/image'
 import { Inter } from '@next/font/google'
-import styles from '@/styles/Home.module.css'
-
-const inter = Inter({ subsets: ['latin'] })
+import Navbar from './components/organ/Navbar/index'
+import Button from './components/atom/Button/index'
+import Link from 'next/link'
+import Image from 'next/image'
+import foto from './assets/foto.png'
+import CardPrimary from './components/atom/Card'
+import { RootContext } from './components/reducer'
+import { useContext } from 'react'
 
 export default function Home() {
+
+  const contex = useContext(RootContext)
+  const {dispatch, state} = contex
+  console.log(contex.state)
+  const message = {
+    id:1,
+    title : 'akannn',
+    message : [{
+        list : 'minum',
+        quantity : 'lalala'
+    }]
+  }
+
+  const message1 = {
+    list : 'mana',
+    quantity : 'lalalal'
+  }
+
+  const handleAddGroup = () => {
+    dispatch({type:"ADD_GROUP", payload: message})
+  }
+
+  const handleDeleteGroup = (props : number) => {
+    dispatch({type:'DELETE_GROUP', payload:props })
+  }
+
+  const handleAddItem = () => {
+    dispatch({type:'ADD_ITEM', payload:message1})
+  }
+
   return (
     <>
       <Head>
@@ -14,108 +48,30 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={styles.main}>
-        <div className={styles.description}>
-          <p>
-            Get started by editing&nbsp;
-            <code className={styles.code}>pages/index.tsx</code>
-          </p>
-          <div>
-            <a
-              href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              By{' '}
-              <Image
-                src="/vercel.svg"
-                alt="Vercel Logo"
-                className={styles.vercelLogo}
-                width={100}
-                height={24}
-                priority
-              />
-            </a>
-          </div>
+      <main>
+        <Navbar />
+        <div className='mx-36 pt-10 flex justify-between'>
+          <h1 className='text-3xl font-semibold '>Actifity</h1>
+          <Button
+            onClick={handleAddGroup}
+            className = 'text-lg font-semibold'
+          >
+            Tambah
+          </Button>
         </div>
-
-        <div className={styles.center}>
-          <Image
-            className={styles.logo}
-            src="/next.svg"
-            alt="Next.js Logo"
-            width={180}
-            height={37}
-            priority
-          />
-          <div className={styles.thirteen}>
-            <Image
-              src="/thirteen.svg"
-              alt="13"
-              width={40}
-              height={31}
-              priority
+        <div className='flex justify-center gap-4 mx-36 flex-wrap mt-10'>
+          {state.items[0]? 
+          state.items.map((item, index) => 
+          <div key={index}>
+            <CardPrimary
+              title = {item.title}
+              onClick = {()=> handleDeleteGroup(index)}
+              body = {item.message[0].list}
             />
-          </div>
-        </div>
-
-        <div className={styles.grid}>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Docs <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Find in-depth information about Next.js features and&nbsp;API.
-            </p>
-          </a>
-
-          <a
-            href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Learn <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Learn about Next.js in an interactive course with&nbsp;quizzes!
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Templates <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Discover and deploy boilerplate example Next.js&nbsp;projects.
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Deploy <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Instantly deploy your Next.js site to a shareable URL
-              with&nbsp;Vercel.
-            </p>
-          </a>
+          </div> ) : 
+          <Link href='/'>
+            <Image src={foto} alt = 'home' width={500} />
+          </Link>}
         </div>
       </main>
     </>
