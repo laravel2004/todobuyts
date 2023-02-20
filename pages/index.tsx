@@ -1,5 +1,4 @@
 import Head from 'next/head'
-import { Inter } from '@next/font/google'
 import Navbar from './components/organ/Navbar/index'
 import Button from './components/atom/Button/index'
 import Link from 'next/link'
@@ -7,37 +6,43 @@ import Image from 'next/image'
 import foto from './assets/foto.png'
 import CardPrimary from './components/atom/Card'
 import { RootContext } from './components/reducer'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
+import { Modal, Input } from 'antd'
 
 export default function Home() {
 
   const contex = useContext(RootContext)
   const {dispatch, state} = contex
-  console.log(contex.state)
+  const [nama, setNama] = useState('')
+  const [open, setOpen] = useState(false)
   const message = {
-    id:1,
-    title : 'akannn',
-    message : [{
-        list : 'minum',
-        quantity : 'lalala'
-    }]
+    id:Math.random(),
+    title : nama,
+    message : []
   }
 
-  const message1 = {
-    list : 'mana',
-    quantity : 'lalalal'
-  }
-
-  const handleAddGroup = () => {
-    dispatch({type:"ADD_GROUP", payload: message})
-  }
-
-  const handleDeleteGroup = (props : number) => {
+  const handleDeleteGroup = (props : string) => {
     dispatch({type:'DELETE_GROUP', payload:props })
+    localStorage.setItem('state', JSON.stringify(state))
   }
 
-  const handleAddItem = () => {
-    dispatch({type:'ADD_ITEM', payload:message1})
+  // const handleAddItem = () => {
+  //   dispatch({type:'ADD_ITEM', payload:message1})
+  // }
+  const handleOpen = () => {
+    setOpen(true)
+  }
+  const handleCancel = (e:any) => {
+    e.preventDefault()
+    setOpen(false)
+  }
+  const handleOk = (e:any) => {
+    e.preventDefault();
+    dispatch({type:"ADD_GROUP", payload: message})
+    setOpen(false);
+    setNama('')
+    localStorage.setItem('state', JSON.stringify(state))
+    console.log(state.items)
   }
 
   return (
@@ -53,7 +58,7 @@ export default function Home() {
         <div className='mx-36 pt-10 flex justify-between'>
           <h1 className='text-3xl font-semibold '>Actifity</h1>
           <Button
-            onClick={handleAddGroup}
+            onClick={handleOpen}
             className = 'text-lg font-semibold'
           >
             Tambah
@@ -64,15 +69,32 @@ export default function Home() {
           state.items.map((item, index) => 
           <div key={index}>
             <CardPrimary
-              title = {item.title}
-              onClick = {()=> handleDeleteGroup(index)}
-              body = {item.message[0].list}
+              title = {item?.title}
+              onClick = {()=> handleDeleteGroup(item.id)}
+              body = {item?.message[0]?.list ? item.message[0].list : null}
+              id = {item?.id}
             />
           </div> ) : 
-          <Link href='/'>
+          <Link href='/' onClick={handleOpen} >
             <Image src={foto} alt = 'home' width={500} />
           </Link>}
         </div>
+        <Modal
+            title = 'Add Group'
+            open ={open}
+            onCancel ={handleCancel} 
+            onOk={handleOk}
+        >
+            <div>
+                <p>Group Belanjaan</p>
+                <Input
+                    placeholder="Exp : Ulang Tahun"
+                    size="large"
+                    onChange={(e:any) =>  setNama(e.target.value)}
+                    value = {nama}
+                />
+            </div>
+        </Modal>
       </main>
     </>
   )

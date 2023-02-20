@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useContext, useState } from "react"
 import Navbar from "./components/organ/Navbar";
 import DetailImage from './assets/detail.png'
 import Image from "next/image";
@@ -7,8 +7,46 @@ import Button from "./components/atom/Button";
 import { LeftOutlined } from '@ant-design/icons/lib/icons'
 import Link from "next/link";
 import CardDetail from "./components/atom/CardDetail";
+import { useRouter } from "next/router";
+import { RootContext } from "./components/reducer";
+import { Modal, Input } from "antd";
 
 const Detail = () => {
+    const {dispatch, state} = useContext(RootContext)
+    const {id}= useRouter().query
+
+    const [list, setList] = useState('')
+    const [quantity, setQuantity] = useState('')
+    const [open, setOpen] = useState(false)
+
+    const message1 = {
+        list : list,
+        quantity : quantity
+    }
+    const handleOpen = () => {
+        setOpen(true)
+      }
+      const handleCancel = (e:any) => {
+        e.preventDefault()
+        setOpen(false)
+      }
+      const handleOk = (e:any) => {
+        e.preventDefault();
+        dispatch({type:'ADD_ITEM', payload :message1, index : id })
+        setOpen(false);
+        localStorage.setItem('state', JSON.stringify(state))
+        setList('')
+        setQuantity('')
+      }
+
+    // const handleAddItem = () => {
+    //     dispatch({type:'ADD_ITEM', payload :message1, index : id })
+    //     console.log(state.items)
+    // }
+    const handleDeteleItem = (props :any) => {
+        dispatch({type : 'DELETE_ITEM', index : id, payload : props})
+        localStorage.setItem('state', JSON.stringify(state))
+    }
     return(
         <>
             <Head>
@@ -28,18 +66,60 @@ const Detail = () => {
                         Actifity
                     </div>
                     <Button
-                        onClick={()=> console.log('helooo')}
+                        onClick={handleOpen}
                         className = 'text-lg font-semibold'
                     >
                         Tambah
                     </Button>
                 </div>
-                <div className='mx-36 pt-10 flex justify-center'>
-                    <Image src={DetailImage} alt = 'detail' width={500} />
-                </div>
-                <div>
-                    <CardDetail />
-                </div>
+                {state.items.map(item => {
+                    if(item?.id == id) {
+                        console.log(item.message)
+                        return(
+                            <div key={item.id}>
+                                {item.message[0]?.list ? item.message.map((list, number) => {
+                                    return(
+                                        <div key={number} className='flex flex-col gap-4 mx-36 pt-10'>
+                                            <CardDetail title = {list} onClick= {() =>  handleDeteleItem(list.list)} />
+                                        </div>
+                                    )
+                                      
+                                }) :
+                                <div className='mx-36 pt-10 flex justify-center'>
+                                    <Image src={DetailImage} alt = 'detail' width={500} />
+                                </div>}
+                            </div>
+                        )
+                    }
+                })}
+
+                <Modal
+                    title = 'Add Group'
+                    open ={open}
+                    onCancel ={handleCancel} 
+                    onOk={handleOk}
+                >
+                    <div className="flex flex-col gap-4">
+                        <p>Group List</p>
+                        <label>
+                            Masukan List :
+                            <Input
+                                placeholder="Exp : Beli Kado"
+                                size="large"
+                                onChange={(e) =>  setList(e.target.value)}
+                            />
+                        </label>
+                        <label>
+                            Berapa Quantity :
+                            <Input
+                                placeholder="1xxxxx"
+                                size="large"
+                                onChange={(e) =>  setQuantity(e.target.value)}
+                            />
+                        </label>
+                    
+                    </div>
+                </Modal>
             </main>
         </>
     )

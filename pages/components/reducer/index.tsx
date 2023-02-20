@@ -1,4 +1,5 @@
-import React, { createContext, ReactNode, useReducer } from "react";
+import { message } from "antd";
+import React, { createContext, ReactNode, useEffect, useReducer } from "react";
 
 type Message = {
   list: string;
@@ -6,7 +7,7 @@ type Message = {
 };
 
 type Item = {
-  id: number;
+  id: string;
   title: string;
   message: Message[];
 };
@@ -18,6 +19,7 @@ type State = {
 type Action = {
   type: string;
   payload: any;
+  index? : any
 };
 
 type ContextType = {
@@ -34,6 +36,7 @@ const initialState: State = {
 };
 
 const reducer = (state: State, action: Action) => {
+
   switch (action.type) {
     case "ADD_GROUP":
       return {
@@ -44,7 +47,7 @@ const reducer = (state: State, action: Action) => {
       return{
         items :
         state.items.map(message => {
-          if(message.id === 1) {
+          if(message.id == action.index) {
             return {
               ...message,
               message: [...message.message, action.payload]
@@ -56,6 +59,23 @@ const reducer = (state: State, action: Action) => {
       return{
         items : state.items.filter(data => data.id !== action.payload)
       } 
+    case 'DELETE_ITEM' :
+      return {
+        items : 
+        state.items.map(message => {
+          if(message.id == action.index) {
+            return {
+              ...message,
+              message : message.message.filter(data => data.list !== action.payload)
+            }
+          }
+        })
+      }
+    case 'LOAD_STATE' :
+      return{
+        ...state,
+        ...action.payload
+      }
     default:
       return state;
   }
@@ -69,6 +89,11 @@ export const RootContext = createContext<ContextType>({
 const Reducer = ({ children }: Props) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const value = { state, dispatch };
+  useEffect(() => {
+    const setState = JSON.parse(localStorage.getItem('state'))
+    console.log(state)
+    dispatch({type:'LOAD_STATE', payload: setState})
+  }, [])
 
   return <RootContext.Provider value={value}>{children}</RootContext.Provider>;
 };
