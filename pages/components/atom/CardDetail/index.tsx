@@ -1,13 +1,18 @@
-import { Card, Space } from 'antd'
-import { EditOutlined } from '@ant-design/icons'
+import { Card } from 'antd'
 import { DeleteOutlined } from '@ant-design/icons/lib/icons'
-import Link from 'next/link'
+import { type } from 'os'
 
-type Props = {
-    message : []
+type Props ={
+    title : Title
+    onClick : any
 }
 
-const CardDetail = (props : any) => {
+type Title = {
+    list : string;
+    quantity : string;
+}
+
+const CardDetail = (props : Props) => {
     return(
         <Card className='w-[700px]' >
             <div className='flex justify-between items-center text-xl font-semibold'>
