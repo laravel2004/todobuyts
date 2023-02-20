@@ -47,7 +47,7 @@ const reducer = (state: State, action: Action) => {
       return{
         items :
         state.items.map(message => {
-          if(message.id == action.index) {
+          if(message?.id == action.index) {
             return {
               ...message,
               message: [...message.message, action.payload]
