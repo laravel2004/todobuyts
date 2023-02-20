@@ -1,6 +1,5 @@
 import { Card } from 'antd'
 import { DeleteOutlined } from '@ant-design/icons/lib/icons'
-import { type } from 'os'
 
 type Props ={
     title : Title

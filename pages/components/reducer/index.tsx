@@ -1,3 +1,4 @@
+import { message } from "antd";
 import React, { createContext, ReactNode, useEffect, useReducer } from "react";
 
 type Message = {
@@ -45,12 +46,20 @@ const reducer = (state: State, action: Action) => {
     case 'ADD_ITEM' : 
       return{
         items :
-        state.items.map(message => {
-          if(message?.id == action.index) {
-            return {
-              ...message,
-              message: [...message.message, action.payload]
-            }
+        state.items.map(item => {
+          if(item && item.id) {
+              if(action && action.index && item.id == action.index) {
+                return {
+                  ...item,
+                  message: [...item.message, action.payload]
+                }
+              }
+              else {
+                return item
+              }
+          }
+          else {
+            return item
           }
         })
       }
@@ -61,22 +70,22 @@ const reducer = (state: State, action: Action) => {
     case 'DELETE_ITEM' :
       return {
         items : 
-        state.items.map(message => {
-          if(message.id == action.index) {
+        state.items.map(item => {
+          if(item.id == action.index) {
             return {
-              ...message,
-              message : message.message.filter(data => data.list !== action.payload)
+              ...item,
+              message : item.message.filter(data => data.list !== action.payload)
             }
           }
-        })
-      }
+          else {
+            return item
+          }
+      })      }
     case 'LOAD_STATE' :
       return{
         ...state,
         ...action.payload
       }
-    default:
-      return state;
   }
 };
 
@@ -90,7 +99,6 @@ const Reducer = ({ children }: Props) => {
   const value = { state, dispatch };
   useEffect(() => {
     const setState = JSON.parse(localStorage.getItem('state'))
-    console.log(state)
     dispatch({type:'LOAD_STATE', payload: setState})
   }, [])
 

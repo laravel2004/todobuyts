@@ -32,18 +32,17 @@ export default function Home() {
   const handleOpen = () => {
     setOpen(true)
   }
-  const handleCancel = (e:any) => {
-    e.preventDefault()
+  const handleCancel = () => {
     setOpen(false)
   }
-  const handleOk = (e:any) => {
-    e.preventDefault();
+  const handleOk = () => {
     dispatch({type:"ADD_GROUP", payload: message})
     setOpen(false);
     setNama('')
     localStorage.setItem('state', JSON.stringify(state))
     console.log(state.items)
   }
+  console.log(state.items)
 
   return (
     <>

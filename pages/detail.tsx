@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import Navbar from "./components/organ/Navbar";
 import DetailImage from './assets/detail.png'
 import Image from "next/image";
@@ -13,7 +13,7 @@ import { Modal, Input } from "antd";
 
 const Detail = () => {
     const {dispatch, state} = useContext(RootContext)
-    const {id}= useRouter().query
+    let {id}= useRouter().query
 
     const [list, setList] = useState('')
     const [quantity, setQuantity] = useState('')
@@ -26,27 +26,29 @@ const Detail = () => {
     const handleOpen = () => {
         setOpen(true)
       }
-      const handleCancel = (e:any) => {
-        e.preventDefault()
+      const handleCancel = () => {
         setOpen(false)
-      }
-      const handleOk = (e:any) => {
-        e.preventDefault();
-        dispatch({type:'ADD_ITEM', payload :message1, index : id })
-        setOpen(false);
-        localStorage.setItem('state', JSON.stringify(state))
+      } 
+      const handleOk = () => {
         setList('')
         setQuantity('')
+        console.log(list)
+        dispatch({type:'ADD_ITEM', payload :message1, index : id })
+        setOpen(false);
+        // localStorage.setItem('state', JSON.stringify(state))
       }
 
-    // const handleAddItem = () => {
-    //     dispatch({type:'ADD_ITEM', payload :message1, index : id })
-    //     console.log(state.items)
-    // }
-    const handleDeteleItem = (props :any) => {
+    const handleDeteleItem = (props :string) => {
         dispatch({type : 'DELETE_ITEM', index : id, payload : props})
-        localStorage.setItem('state', JSON.stringify(state))
+        // localStorage.setItem('state', JSON.stringify(state))
     }
+
+    useEffect(() => {
+        if(state.items.filter(item => item !== null)) {
+            localStorage.setItem('state', JSON.stringify(state))
+        }
+    },[state])
+    // console.log(state.items[0].id)
     return(
         <>
             <Head>
@@ -74,7 +76,6 @@ const Detail = () => {
                 </div>
                 {state.items.map(item => {
                     if(item?.id == id) {
-                        console.log(item.message)
                         return(
                             <div key={item.id}>
                                 {item.message[0]?.list ? item.message.map((list, number) => {
@@ -107,6 +108,7 @@ const Detail = () => {
                                 placeholder="Exp : Beli Kado"
                                 size="large"
                                 onChange={(e) =>  setList(e.target.value)}
+                                value={list}
                             />
                         </label>
                         <label>
@@ -115,6 +117,7 @@ const Detail = () => {
                                 placeholder="1xxxxx"
                                 size="large"
                                 onChange={(e) =>  setQuantity(e.target.value)}
+                                value ={quantity}
                             />
                         </label>
                     
