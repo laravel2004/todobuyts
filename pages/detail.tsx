@@ -4,12 +4,12 @@ import DetailImage from './assets/detail.png'
 import Image from "next/image";
 import Head from "next/head";
 import Button from "./components/atom/Button";
-import { LeftOutlined } from '@ant-design/icons/lib/icons'
+import { LeftOutlined, DeleteOutlined } from '@ant-design/icons/lib/icons'
 import Link from "next/link";
-import CardDetail from "./components/atom/CardDetail";
 import { useRouter } from "next/router";
 import { RootContext } from "./components/reducer";
-import { Modal, Input } from "antd";
+import { Modal, Input, Card } from "antd";
+
 
 const Detail = () => {
     const {dispatch, state} = useContext(RootContext)
@@ -81,7 +81,18 @@ const Detail = () => {
                                 {item.message[0]?.list ? item.message.map((list, number) => {
                                     return(
                                         <div key={number} className='flex flex-col gap-4 mx-36 pt-10'>
-                                            <CardDetail title = {list} onClick= {() =>  handleDeteleItem(list.list)} />
+                                            {/* <CardDetail title = {list} onClick= {() =>  handleDeteleItem(list.list)} /> */}
+                                            <Card className='w-[700px]' >
+                                                <div className='flex justify-between items-center text-xl font-semibold'>
+                                                    <div>
+                                                        <p>List :{list.list}</p>
+                                                        <p>Quantity:{list.quantity}</p>
+                                                    </div>
+                                                    <div onClick={() => handleDeteleItem(list.list)}>
+                                                        <DeleteOutlined />
+                                                    </div>
+                                                </div>
+                                            </Card>
                                         </div>
                                     )
                                       
