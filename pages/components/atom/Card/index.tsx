@@ -4,7 +4,15 @@ import { DeleteOutlined } from '@ant-design/icons/lib/icons'
 import Link from 'next/link'
 import Button from '../Button'
 
-const CardPrimary = (props : any) => {
+type Props = {
+  title : string;
+  id : any;
+  body : string;
+  onClick : () => void;
+
+}
+
+const CardPrimary = (props : Props) => {
     return(
         <Card 
             title={props.title} 

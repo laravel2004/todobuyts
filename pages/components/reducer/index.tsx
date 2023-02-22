@@ -19,7 +19,7 @@ type State = {
 type Action = {
   type: string;
   payload: any;
-  index? : any
+  index? : string[] | string;
 };
 
 type ContextType = {

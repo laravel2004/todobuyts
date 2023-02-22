@@ -34,21 +34,19 @@ const Detail = () => {
         setQuantity('')
         console.log(list)
         dispatch({type:'ADD_ITEM', payload :message1, index : id })
+        if(state.items.filter(item => item !== null)) {
+            localStorage.setItem('state', JSON.stringify(state))
+        }
         setOpen(false);
-        // localStorage.setItem('state', JSON.stringify(state))
       }
 
     const handleDeteleItem = (props :string) => {
         dispatch({type : 'DELETE_ITEM', index : id, payload : props})
-        // localStorage.setItem('state', JSON.stringify(state))
-    }
-
-    useEffect(() => {
         if(state.items.filter(item => item !== null)) {
             localStorage.setItem('state', JSON.stringify(state))
         }
-    },[state])
-    // console.log(state.items[0].id)
+    }
+
     return(
         <>
             <Head>

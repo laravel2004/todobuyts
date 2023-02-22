@@ -1,6 +1,6 @@
 import Link from "next/link"
 
-const Navbar = (props : any) => {
+const Navbar = () => {
     return(
         <header>
             <div className="h-16 md:h-[105px] flex items-center bg-primary">
