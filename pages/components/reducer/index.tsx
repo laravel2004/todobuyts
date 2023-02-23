@@ -35,21 +35,28 @@ const initialState: State = {
   items: []
 };
 
-export const addGroup:string = "ADD_GROUP";
-export const addItem:string = "ADD_ITEM";
-export const deleteGroup:string = "DELETE_GROUP";
-export const deleteItem:string = "DELETE_ITEM";
-export const loadState:string = "LOAD_STATE";
+export enum ActionType {
+  ADD_GROUP = "ADD_GROUP",
+  ADD_ITEM = "ADD_ITEM",
+  DELETE_GROUP = "DELETE_GROUP",
+  DELETE_ITEM = "DELETE_ITEM",
+  LOAD_STATE = "LOAD_STATE"
+}
+
+// export const addGroup:string = "ADD_GROUP";
+// export const addItem:string = "ADD_ITEM";
+// export const deleteGroup:string = "DELETE_GROUP";
+// export const deleteItem:string = "DELETE_ITEM";
 
 const reducer = (state: State, action: Action) => {
 
   switch (action.type) {
-    case addGroup:
+    case ActionType.ADD_GROUP:
       return {
         ...state,
         items: [...state.items, action.payload]
       };
-    case addItem : 
+    case ActionType.ADD_ITEM : 
       return{
         items :
         state.items.map(item => {
@@ -69,11 +76,11 @@ const reducer = (state: State, action: Action) => {
           }
         })
       }
-    case deleteGroup:
+    case ActionType.DELETE_GROUP:
       return{
         items : state.items.filter(data => data.id !== action.payload)
       } 
-    case deleteItem :
+    case ActionType.DELETE_ITEM :
       return {
         items : 
         state.items.map(item => {
@@ -87,7 +94,7 @@ const reducer = (state: State, action: Action) => {
             return item
           }
       })      }
-    case loadState :
+    case ActionType.LOAD_STATE :
       return{
         ...state,
         ...action.payload
@@ -105,7 +112,7 @@ const Reducer = ({ children }: Props) => {
   const value = { state, dispatch };
   useEffect(() => {
     const setState = JSON.parse(localStorage.getItem('state'))
-    dispatch({type:loadState, payload: setState})
+    dispatch({type:ActionType.LOAD_STATE, payload: setState})
   }, [])
 
   return <RootContext.Provider value={value}>{children}</RootContext.Provider>;

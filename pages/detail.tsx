@@ -9,7 +9,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { RootContext } from "./components/reducer";
 import { Modal, Input, Card } from "antd";
-import { addItem, deleteItem } from "./components/reducer";
+import { ActionType } from "./components/reducer";
 
 
 const Detail = () => {
@@ -33,7 +33,7 @@ const Detail = () => {
     const handleOk = () => {
         setList('')
         setQuantity('')
-        dispatch({type:addItem, payload :message1, index : id })
+        dispatch({type:ActionType.ADD_ITEM, payload :message1, index : id })
         if(state.items.filter(item => item !== null)) {
             localStorage.setItem('state', JSON.stringify(state))
         }
@@ -41,7 +41,7 @@ const Detail = () => {
     }
 
     const handleDeteleItem = (props :string) => {
-        dispatch({type : deleteItem, index : id, payload : props})
+        dispatch({type : ActionType.DELETE_ITEM, index : id, payload : props})
         if(state.items.filter(item => item !== null)) {
             localStorage.setItem('state', JSON.stringify(state))
         }
