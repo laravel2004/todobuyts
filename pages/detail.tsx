@@ -26,19 +26,18 @@ const Detail = () => {
     const handleOpen = () => {
         setOpen(true)
       }
-      const handleCancel = () => {
+    const handleCancel = () => {
         setOpen(false)
-      } 
-      const handleOk = () => {
+    } 
+    const handleOk = () => {
         setList('')
         setQuantity('')
-        console.log(list)
         dispatch({type:'ADD_ITEM', payload :message1, index : id })
         if(state.items.filter(item => item !== null)) {
             localStorage.setItem('state', JSON.stringify(state))
         }
         setOpen(false);
-      }
+    }
 
     const handleDeteleItem = (props :string) => {
         dispatch({type : 'DELETE_ITEM', index : id, payload : props})
@@ -57,7 +56,6 @@ const Detail = () => {
             </Head>
             <Navbar />
             <main>
-                
                 <div className='mx-36 pt-10 flex justify-between'>
                     <div className="text-3xl font-semibold flex justify-between items-center">
                         <Link href= '/'>
@@ -79,7 +77,6 @@ const Detail = () => {
                                 {item.message[0]?.list ? item.message.map((list, number) => {
                                     return(
                                         <div key={number} className='flex flex-col gap-4 mx-36 pt-10'>
-                                            {/* <CardDetail title = {list} onClick= {() =>  handleDeteleItem(list.list)} /> */}
                                             <Card className='w-[700px]' >
                                                 <div className='flex justify-between items-center text-xl font-semibold'>
                                                     <div>

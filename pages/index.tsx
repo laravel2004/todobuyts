@@ -26,9 +26,6 @@ export default function Home() {
     localStorage.setItem('state', JSON.stringify(state))
   }
 
-  // const handleAddItem = () => {
-  //   dispatch({type:'ADD_ITEM', payload:message1})
-  // }
   const handleOpen = () => {
     setOpen(true)
   }
@@ -40,9 +37,7 @@ export default function Home() {
     setOpen(false);
     setNama('')
     localStorage.setItem('state', JSON.stringify(state))
-    console.log(state.items)
   }
-  console.log(state.items)
 
   return (
     <>

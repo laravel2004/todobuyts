@@ -6,10 +6,9 @@ import Button from '../Button'
 
 type Props = {
   title : string;
-  id : any;
+  id : string | number;
   body : string;
   onClick : () => void;
-
 }
 
 const CardPrimary = (props : Props) => {
