@@ -35,15 +35,21 @@ const initialState: State = {
   items: []
 };
 
+export const addGroup:string = "ADD_GROUP";
+export const addItem:string = "ADD_ITEM";
+export const deleteGroup:string = "DELETE_GROUP";
+export const deleteItem:string = "DELETE_ITEM";
+export const loadState:string = "LOAD_STATE";
+
 const reducer = (state: State, action: Action) => {
 
   switch (action.type) {
-    case "ADD_GROUP":
+    case addGroup:
       return {
         ...state,
         items: [...state.items, action.payload]
       };
-    case 'ADD_ITEM' : 
+    case addItem : 
       return{
         items :
         state.items.map(item => {
@@ -63,11 +69,11 @@ const reducer = (state: State, action: Action) => {
           }
         })
       }
-    case 'DELETE_GROUP':
+    case deleteGroup:
       return{
         items : state.items.filter(data => data.id !== action.payload)
       } 
-    case 'DELETE_ITEM' :
+    case deleteItem :
       return {
         items : 
         state.items.map(item => {
@@ -81,7 +87,7 @@ const reducer = (state: State, action: Action) => {
             return item
           }
       })      }
-    case 'LOAD_STATE' :
+    case loadState :
       return{
         ...state,
         ...action.payload
@@ -99,7 +105,7 @@ const Reducer = ({ children }: Props) => {
   const value = { state, dispatch };
   useEffect(() => {
     const setState = JSON.parse(localStorage.getItem('state'))
-    dispatch({type:'LOAD_STATE', payload: setState})
+    dispatch({type:loadState, payload: setState})
   }, [])
 
   return <RootContext.Provider value={value}>{children}</RootContext.Provider>;

@@ -8,6 +8,7 @@ import CardPrimary from './components/atom/Card'
 import { RootContext } from './components/reducer'
 import { useContext, useState } from 'react'
 import { Modal, Input } from 'antd'
+import { deleteGroup, addGroup } from './components/reducer'
 
 export default function Home() {
 
@@ -22,7 +23,7 @@ export default function Home() {
   }
 
   const handleDeleteGroup = (props : string) => {
-    dispatch({type:'DELETE_GROUP', payload:props })
+    dispatch({type:deleteGroup, payload:props })
     localStorage.setItem('state', JSON.stringify(state))
   }
 
@@ -33,7 +34,7 @@ export default function Home() {
     setOpen(false)
   }
   const handleOk = () => {
-    dispatch({type:"ADD_GROUP", payload: message})
+    dispatch({type:addGroup, payload: message})
     setOpen(false);
     setNama('')
     localStorage.setItem('state', JSON.stringify(state))
