@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react"
 import Navbar from "./../components/organ/Navbar";
-import DetailImage from './assets/detail.png'
+import DetailImage from './../assets/detail.png'
 import Image from "next/image";
 import Head from "next/head";
 import Button from "./../components/atom/Button";
