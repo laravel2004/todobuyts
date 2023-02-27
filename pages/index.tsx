@@ -1,14 +1,14 @@
 import Head from 'next/head'
-import Navbar from './components/organ/Navbar/index'
-import Button from './components/atom/Button/index'
+import Navbar from './../components/organ/Navbar/index'
+import Button from './../components/atom/Button/index'
 import Link from 'next/link'
 import Image from 'next/image'
 import foto from './assets/foto.png'
-import CardPrimary from './components/atom/Card'
-import { RootContext } from './components/reducer'
+import CardPrimary from './../components/atom/Card'
+import { RootContext } from './../components/reducer'
 import { useContext, useState } from 'react'
 import { Modal, Input } from 'antd'
-import { ActionType } from './components/reducer'
+import { ActionType } from './../components/reducer'
 
 export default function Home() {
 

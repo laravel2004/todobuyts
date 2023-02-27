@@ -1,15 +1,15 @@
 import React, { useContext, useEffect, useState } from "react"
-import Navbar from "./components/organ/Navbar";
+import Navbar from "./../components/organ/Navbar";
 import DetailImage from './assets/detail.png'
 import Image from "next/image";
 import Head from "next/head";
-import Button from "./components/atom/Button";
+import Button from "./../components/atom/Button";
 import { LeftOutlined, DeleteOutlined } from '@ant-design/icons/lib/icons'
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { RootContext } from "./components/reducer";
+import { RootContext } from "./../components/reducer";
 import { Modal, Input, Card } from "antd";
-import { ActionType } from "./components/reducer";
+import { ActionType } from "./../components/reducer";
 
 
 const Detail = () => {
